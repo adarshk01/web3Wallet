@@ -4,13 +4,17 @@ import { Buffer } from "buffer";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import { seedAtom } from "./SeedAtom";
+import { useRecoilState } from "recoil";
+
 // Polyfill Buffer for the browser environment
 if (typeof window !== "undefined") {
   window.Buffer = Buffer;
 }
 
 export function NewWallet() {
-  const [seedPhrase, setSeedPhrase] = useState<string[]>([]);
+  // const [seedPhrase, setSeedPhrase] = useState<string[]>([]);
+  const [seedPhrase, setSeedPhrase] = useRecoilState(seedAtom);
   const [copyStatus, setCopyStatus] = useState("");
   const navigate = useNavigate();
   //   try {

@@ -7,6 +7,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      crypto: "crypto-browserify",
+      stream: "stream-browserify",
     },
   },
   server: {

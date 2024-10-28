@@ -17,21 +17,11 @@ export function NewWallet() {
   const [seedPhrase, setSeedPhrase] = useRecoilState(seedAtom);
   const [copyStatus, setCopyStatus] = useState("");
   const navigate = useNavigate();
-  //   try {
-  //     // Generate the mnemonic and split it into an array of words
 
-  //     const mnemonic = generateMnemonic(128).split(" ");
-  //     useEffect(function () {
-  //       setSeedPhrase(mnemonic);
-  //     }, []);
-
-  //     console.log("Generated Mnemonic:", seedPhrase);
-
-  //     const seed = mnemonicToSeedSync(seedPhrase.toString());
-  //     console.log("Generated Seed:", seed.toString("hex"));
-  //   } catch (error) {
-  //     console.error("Error generating wallet:", error);
-  //   }
+  function updateSeedPhrase(c: string[]) {
+    setSeedPhrase(c);
+    localStorage.setItem("mnemonicsArr", JSON.stringify(c));
+  }
 
   function handleClick() {
     navigate("/dashboard");
@@ -49,8 +39,8 @@ export function NewWallet() {
     try {
       // Generate the mnemonic and split it into an array of words
       const mnemonic = generateMnemonic(128).split(" ");
-      setSeedPhrase(mnemonic);
-
+      // setSeedPhrase(mnemonic);
+      updateSeedPhrase(mnemonic);
       console.log("Generated Mnemonic:", mnemonic.join(" "));
 
       const seed = mnemonicToSeedSync(mnemonic.join(" "));

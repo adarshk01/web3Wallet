@@ -11,6 +11,7 @@ import { Button } from "./ui/button";
 export function Dashboard() {
   const [walletNu, setWalletNu] = useState(0);
   const mnemonicsArr = useRecoilValue(seedAtom);
+
   const [currPubKey, setCurrPubKey] = useState("");
   const [currPriKey, setCurrPriKey] = useState("");
   const [walletArr, setWalletArr] = useState<string[]>([]);
@@ -292,6 +293,10 @@ export function Dashboard() {
           </div>
         </div>
       )}
+      <div className="absolute bottom-0 text-white left-36 mb-3 flex gap-1">
+        <div>Designed and Developed by</div>
+        <div className="font-semibold"> Adarsh</div>
+      </div>
     </div>
   );
 }

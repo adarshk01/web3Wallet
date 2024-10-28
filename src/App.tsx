@@ -8,7 +8,7 @@ import { RecoilRoot } from "recoil";
 function App() {
   return (
     <RecoilRoot>
-      <div>
+      <div className="font-rubik">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate to="/createWallet" />} />

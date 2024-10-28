@@ -25,6 +25,7 @@
     "recoil": "^0.7.7",
     "stream-browserify": "^3.0.0",
     "tailwind-merge": "^2.5.3",
+    "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
     "tweetnacl": "^1.0.3",
     "vite-plugin-node-polyfills": "^0.22.0"

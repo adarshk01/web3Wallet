@@ -52,13 +52,17 @@ export function Dashboard() {
           <NavBar />
         </div>
         <div className="grid grid-cols-12  min-h-screen pb-16 pt-24 ">
-          <div className="col-span-3 h-full bg-gradient-to-br from-neutral-800 from-25% to-black to-100% lg:ml-36 rounded-xl border border-zinc-700">
-            <div className="text-white p-5 font-semibold text-lg">Wallets</div>
-            <div className="mx-5">
+          <div className="  col-span-3 h-full   bg-gradient-to-br from-neutral-800 from-25% to-black to-100% lg:ml-36 rounded-xl border border-zinc-700 ">
+            <div className="text-white p-5 font-semibold text-lg ">Wallets</div>
+
+            <div
+              className="mx-5 h-full overflow-y-auto  scrollbar scrollbar-thumb-zinc-700 rounded-scrollbar no-scroll-buttons pr-3"
+              style={{ maxHeight: "calc(100vh - 250px)" }}
+            >
               {walletArr.map(function (i, index) {
                 return (
                   <div
-                    className="bg-white px-2 mb-4 w-full rounded-lg font-bold text-md py-2 cursor-pointer flex justify-start gap-2"
+                    className="bg-white px-2 mb-4 w-full rounded-lg font-bold text-md py-2 cursor-pointer flex justify-start gap-2  "
                     onClick={function () {
                       setWalletNu(index);
                     }}
@@ -131,7 +135,7 @@ export function Dashboard() {
             </div>
             <div className="  w-full h-px   bg-gradient-to-r from-transparent via-zinc-500 to-transparent mt-10   "></div>
             <div className="m-10">
-              <div className="bg-white w-max  px-5 h-max py-3 rounded-lg text-wrap">
+              <div className="bg-white w-full  px-5 h-max py-3 rounded-lg text-wrap">
                 <div className="font-bold text-lg">Sol</div>
                 <div className="font-semibold">Public Key: {currPubKey}</div>
               </div>
@@ -144,7 +148,12 @@ export function Dashboard() {
                 <div className="text-white font-semibold text-lg flex justify-center">
                   Add Wallets
                 </div>
-                <div className="cursor-pointer " onClick={function () {}}>
+                <div
+                  className="cursor-pointer "
+                  onClick={function () {
+                    setWalletNu(walletNu + 1);
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -191,7 +200,7 @@ export function Dashboard() {
       </div>
       {showPriKey && (
         <div className="flex justify-center items-center h-full absolute w-full select-none">
-          <div className=" bg-gradient-to-br from-neutral-800 from-55% to-black to-100% h-max w-max  py-10 px-16 rounded-xl border border-zinc-700">
+          <div className="bg-gradient-to-br from-neutral-800 from-55% to-black to-100% h-max w-max  py-10 px-16 rounded-xl border border-zinc-700  ">
             <div className="flex justify-end">
               <div className=" hover:rounded-full hover:bg-neutral-600 h-10 w-10  flex justify-center items-center">
                 <svg

@@ -57,13 +57,17 @@ export function Dashboard() {
             <div className="text-white p-5 font-semibold text-lg ">Wallets</div>
 
             <div
-              className="mx-5 h-full overflow-y-auto  scrollbar scrollbar-thumb-zinc-700 rounded-scrollbar no-scroll-buttons pr-3"
+              className="ml-5 h-full overflow-y-auto  scrollbar scrollbar-thumb-zinc-700 rounded-scrollbar no-scroll-buttons pr-3 mr-2 "
               style={{ maxHeight: "calc(100vh - 250px)" }}
             >
               {walletArr.map(function (i, index) {
                 return (
                   <div
-                    className="bg-white px-2 mb-4 w-full rounded-lg font-bold text-md py-2 cursor-pointer flex justify-start gap-2  "
+                    className={`bg-white px-2 mb-4 w-full rounded-lg font-bold text-md py-2 cursor-pointer flex justify-start gap-2  transition-all duration-300 ease-out ${
+                      index === walletArr.length - 1
+                        ? "max-h-0 opacity-0"
+                        : "max-h-20 opacity-100"
+                    }`}
                     onClick={function () {
                       setWalletNu(index);
                     }}
@@ -295,7 +299,15 @@ export function Dashboard() {
       )}
       <div className="absolute bottom-0 text-white left-36 mb-3 flex gap-1">
         <div>Designed and Developed by</div>
-        <div className="font-semibold"> Adarsh</div>
+        <a
+          href="https://adarshnow.xyz" // Replace with your URL
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold cursor-pointer"
+        >
+          {" "}
+          Adarsh
+        </a>
       </div>
     </div>
   );

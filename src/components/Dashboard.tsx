@@ -173,7 +173,10 @@ export function Dashboard() {
                   sendFun ? "opacity-100  " : "opacity-0  "
                 }`}
               >
-                <SendFun />
+                <SendFun
+                  setDashRender={setDashRender}
+                  setSendFun={setSendFun}
+                />
               </div>
             )}
           </div>

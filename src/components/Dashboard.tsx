@@ -7,19 +7,26 @@ import { seedAtom } from "./SeedAtom";
 import { useEffect, useState } from "react";
 import { mnemonicToSeedSync } from "bip39";
 import { Button } from "./ui/button";
+import { SendFun } from "./SendFun";
 
 export function Dashboard() {
   const [walletNu, setWalletNu] = useState(0);
   const mnemonicsArr = useRecoilValue(seedAtom);
-
+  const [dashRender, setDashRender] = useState(true);
   const [currPubKey, setCurrPubKey] = useState("");
   const [currPriKey, setCurrPriKey] = useState("");
   const [walletArr, setWalletArr] = useState<string[]>([]);
   const [showPriKey, setShowPriKey] = useState(false);
   const [showPriKeyTxt, setShowPriKeyTxt] = useState(false);
-
+  const [sendFun, setSendFun] = useState(false);
   async function clickToCopy() {
     await navigator.clipboard.writeText(currPriKey.toString());
+  }
+
+  function HandleClick() {
+    setTimeout(() => {
+      setDashRender(false);
+    }, 400);
   }
 
   useEffect(() => {
@@ -33,6 +40,7 @@ export function Dashboard() {
     setCurrPubKey(Keypair.fromSecretKey(secret).publicKey.toBase58());
     setCurrPriKey(Buffer.from(secret).toString("base64"));
     const newWallet = Keypair.fromSecretKey(secret).publicKey.toBase58();
+
     setWalletArr((prevWalletArr) => {
       // Only add if the wallet isn't already in the array to avoid duplicates
       if (!prevWalletArr.includes(newWallet)) {
@@ -63,11 +71,8 @@ export function Dashboard() {
               {walletArr.map(function (i, index) {
                 return (
                   <div
-                    className={`bg-white px-2 mb-4 w-full rounded-lg font-bold text-md py-2 cursor-pointer flex justify-start gap-2  transition-all duration-300 ease-out ${
-                      index === walletArr.length - 1
-                        ? "max-h-0 opacity-0"
-                        : "max-h-20 opacity-100"
-                    }`}
+                    className={`select-none  px-2 mb-4 w-full rounded-lg font-bold text-md py-2 cursor-pointer flex justify-start gap-2  transition-all duration-300 ease-out  
+                    ${walletNu == index ? "bg-white" : "bg-zinc-400"} `}
                     onClick={function () {
                       setWalletNu(index);
                     }}
@@ -94,57 +99,83 @@ export function Dashboard() {
               })}
             </div>
           </div>
-          <div className="col-span-6 h-full bg-gradient-to-br from-neutral-800 from-25% to-black to-100%  mx-5  rounded-xl border border-zinc-700">
-            <div className="mt-5 font-bold text-6xl text-stone-400 flex justify-center">
-              SOL
-            </div>
-            <div className="flex justify-center items-start mt-2 font-bold text-5xl text-white">
-              $0.00
-            </div>
+          <div className="col-span-6 h-full bg-gradient-to-br from-neutral-800 from-25% to-black to-100%  mx-5  rounded-xl border border-zinc-700 overflow-hidden relative">
+            {dashRender ? (
+              <div
+                className={`  duration-300 ease-out transition-all   ${
+                  sendFun
+                    ? "opacity-0  translate-y-1"
+                    : "opacity-100  translate-y-0"
+                }`}
+              >
+                <div className="mt-5 font-bold text-6xl text-stone-400 flex justify-center">
+                  SOL
+                </div>
+                <div className="flex justify-center items-start mt-2 font-bold text-5xl text-white">
+                  $0.00
+                </div>
 
-            <div className="flex justify-center mt-10 gap-5">
-              <Button className="bg-white text-black gap-2 text-lg hover:bg-zinc-400">
-                Send
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
-                  />
-                </svg>
-              </Button>
-              <Button className="bg-white text-black gap-2 text-lg hover:bg-zinc-400">
-                Receive
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                  />
-                </svg>
-              </Button>
-            </div>
-            <div className="  w-full h-px   bg-gradient-to-r from-transparent via-zinc-500 to-transparent mt-10   "></div>
-            <div className="m-10">
-              <div className="bg-white w-full  px-5 h-max py-3 rounded-lg text-wrap">
-                <div className="font-bold text-lg">Sol</div>
-                <div className="font-semibold">Public Key: {currPubKey}</div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <Button
+                    className="bg-white text-black gap-2 text-lg hover:bg-zinc-400"
+                    onClick={function () {
+                      setSendFun(true);
+                      HandleClick();
+                    }}
+                  >
+                    Send
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+                      />
+                    </svg>
+                  </Button>
+                  <Button className="bg-white text-black gap-2 text-lg hover:bg-zinc-400">
+                    Receive
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                      />
+                    </svg>
+                  </Button>
+                </div>
+                <div className="  w-full h-px   bg-gradient-to-r from-transparent via-zinc-500 to-transparent mt-10   "></div>
+                <div className="m-10">
+                  <div className="bg-white w-full  px-5 h-max py-3 rounded-lg text-wrap">
+                    <div className="font-bold text-lg">Sol</div>
+                    <div className="font-semibold">
+                      Public Key: {currPubKey}
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div
+                className={`flex  justify-center  transition-all  duration-300 ease-in  mt-10 w-full ${
+                  sendFun ? "opacity-100  " : "opacity-0  "
+                }`}
+              >
+                <SendFun />
+              </div>
+            )}
           </div>
 
           <div className="col-span-3 h-max bg-gradient-to-br from-neutral-800 from-25% to-black to-100%  border border-zinc-700 rounded-xl mr-36">
@@ -156,7 +187,7 @@ export function Dashboard() {
                 <div
                   className="cursor-pointer "
                   onClick={function () {
-                    setWalletNu(walletNu + 1);
+                    setWalletNu(walletArr.length);
                   }}
                 >
                   <svg
@@ -207,14 +238,14 @@ export function Dashboard() {
         <div className="flex justify-center items-center h-full absolute w-full select-none">
           <div className="bg-gradient-to-br from-neutral-800 from-55% to-black to-100% h-max w-max  py-10 px-16 rounded-xl border border-zinc-700  ">
             <div className="flex justify-end">
-              <div className=" hover:rounded-full hover:bg-neutral-600 h-10 w-10  flex justify-center items-center">
+              <div className="   hover:rounded-full hover:bg-neutral-600 h-10 w-10  flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
-                  stroke="white"
-                  className="size-8 cursor-pointer"
+                  stroke="grey "
+                  className="size-8 cursor-pointer hover:stroke-white"
                   onClick={function () {
                     setShowPriKey(false);
                     setShowPriKeyTxt(false);

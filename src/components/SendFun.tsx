@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 type sendFunType = {
   setDashRender: (value: boolean) => void;
   setSendFun: (value: boolean) => void;
+  walletArr: string[];
 };
 
 export function SendFun(props: sendFunType) {
@@ -76,7 +77,7 @@ export function SendFun(props: sendFunType) {
               openDropDown ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
             }`}
           >
-            hello
+            {props.walletArr.length == 1 ? "No Address found" : "hello"}
           </div>
         </div>
       </div>

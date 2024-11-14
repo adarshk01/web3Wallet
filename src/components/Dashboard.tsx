@@ -8,8 +8,10 @@ import { useEffect, useState } from "react";
 import { mnemonicToSeedSync } from "bip39";
 import { Button } from "./ui/button";
 import { SendFun } from "./SendFun";
+import axios from "axios";
 
 export function Dashboard() {
+  const [sol, setSol] = useState(0);
   const [walletNu, setWalletNu] = useState(0);
   const mnemonicsArr = useRecoilValue(seedAtom);
   const [dashRender, setDashRender] = useState(true);
@@ -19,11 +21,44 @@ export function Dashboard() {
   const [showPriKey, setShowPriKey] = useState(false);
   const [showPriKeyTxt, setShowPriKeyTxt] = useState(false);
   const [sendFun, setSendFun] = useState(false);
-  const [delWallet, setDelWallet] = useState(-1);
+  const [delWallet, setDelWallet] = useState(walletNu);
+
+  const data = {
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getBalance",
+    params: [currPubKey],
+  };
 
   async function clickToCopy() {
     await navigator.clipboard.writeText(currPriKey.toString());
   }
+
+  async function getSol() {
+    if (!currPubKey) {
+      console.log("Public key is not set.");
+      return; // Do not make the request if currPubKey is invalid
+    }
+    try {
+      let amount = await axios.post(
+        "https://solana-mainnet.g.alchemy.com/v2/t9rxAD1eHPOfpzL72T8FWDdyWr38n6BV",
+        data
+      );
+      let solAmount = amount.data.result.value / 1000000000;
+      setSol(solAmount);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(
+    function () {
+      if (currPubKey) {
+        getSol();
+      }
+    },
+    [currPubKey]
+  );
 
   function HandleClick() {
     setTimeout(() => {
@@ -77,6 +112,7 @@ export function Dashboard() {
                     ${walletNu == index ? "bg-white" : "bg-zinc-400"} `}
                     onClick={function () {
                       setWalletNu(index);
+                      setDelWallet(index);
                     }}
                   >
                     <div>
@@ -114,7 +150,7 @@ export function Dashboard() {
                   SOL
                 </div>
                 <div className="flex justify-center items-start mt-2 font-bold text-5xl text-white">
-                  $0.00
+                  {sol}
                 </div>
 
                 <div className="flex justify-center mt-10 gap-5">
@@ -248,7 +284,23 @@ export function Dashboard() {
                     if (walletArr.length == 1) {
                       return;
                     }
-                    walletArr.splice(walletArr.length - 1, 1);
+                    // if (walletArr.length) {
+                    //   const newWalletArr = walletArr.slice(); // Create a copy to avoid mutating the original array
+                    //   const lastElement = newWalletArr.pop(); // Remove the last element
+                    //   if (lastElement !== undefined) {
+                    //     setWalletArr(newWalletArr);
+                    //   }
+                    // }
+
+                    const newWalletArr = walletArr.slice();
+                    newWalletArr.splice(walletNu, 1);
+                    if (walletNu == 0) {
+                      setWalletNu(walletNu + 1);
+                    } else {
+                      setWalletNu(walletNu - 1);
+                    }
+
+                    setWalletArr(newWalletArr);
                   }}
                 >
                   <svg
@@ -365,7 +417,7 @@ export function Dashboard() {
           </div>
         </div>
       )}
-      <div className="absolute bottom-0 text-white left-36 mb-3 flex gap-1">
+      <div className="absolute bottom-0 text-white left-36 mb-3 flex gap-1 select-none">
         <div>Designed and Developed by</div>
         <a
           href="https://adarshnow.xyz" // Replace with your URL

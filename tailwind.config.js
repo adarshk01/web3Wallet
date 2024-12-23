@@ -1,5 +1,5 @@
-const tailwindcssAnimate = require("tailwindcss-animate");
-const tailwindScrollbar = require("tailwind-scrollbar");
+// const tailwindcssAnimate = require("tailwindcss-animate");
+// const tailwindScrollbar = require("tailwind-scrollbar");
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -64,5 +64,5 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssAnimate, tailwindScrollbar],
+  plugins: [],
 };

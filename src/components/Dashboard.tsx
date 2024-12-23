@@ -105,7 +105,7 @@ export function Dashboard() {
               className="ml-5 h-full overflow-y-auto  scrollbar scrollbar-thumb-zinc-700 rounded-scrollbar no-scroll-buttons pr-3 mr-2 "
               style={{ maxHeight: "calc(100vh - 250px)" }}
             >
-              {walletArr.map(function (i, index) {
+              {walletArr.map(function (_, index) {
                 return (
                   <div
                     className={`select-none  px-2 mb-4 w-full rounded-lg font-bold text-md py-2 cursor-pointer flex justify-start gap-2  transition-all duration-300 ease-out  

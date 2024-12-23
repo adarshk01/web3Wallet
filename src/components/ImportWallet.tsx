@@ -37,7 +37,7 @@ export function ImportWallet({ handleImportWallet }: any) {
       <div className="flex flex-wrap gap-5 justify-center">
         {Array(12)
           .fill("")
-          .map(function (input, index) {
+          .map(function (_, index) {
             return (
               <div key={index} className="flex">
                 <Input

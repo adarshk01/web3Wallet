@@ -1,7 +1,7 @@
 "use client";
 import { generateMnemonic, mnemonicToSeedSync } from "bip39";
 import { Buffer } from "buffer";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { seedAtom } from "./SeedAtom";
@@ -15,7 +15,7 @@ if (typeof window !== "undefined") {
 export function NewWallet() {
   // const [seedPhrase, setSeedPhrase] = useState<string[]>([]);
   const [seedPhrase, setSeedPhrase] = useRecoilState(seedAtom);
-  const [copyStatus, setCopyStatus] = useState("");
+  // const [copyStatus, setCopyStatus] = useState("");
   const navigate = useNavigate();
 
   function updateSeedPhrase(c: string[]) {
@@ -54,9 +54,9 @@ export function NewWallet() {
   async function clickToCopy() {
     try {
       await navigator.clipboard.writeText(seedPhrase.toString());
-      setCopyStatus("copied");
+      // setCopyStatus("copied");
     } catch (error) {
-      setCopyStatus("Failed to copy!");
+      // setCopyStatus("Failed to copy!");
     }
   }
 
